@@ -12,11 +12,7 @@ class FancyIrc {
     initialize: server port: port nick: nick password: nil
   }
 
-  def initialize: server port: port nick: nick password: pw {
-    @server = server
-    @port = port
-    @nick = nick
-    @password = pw
+  def initialize: @server port: @port nick: @nick password: @password {
     @connected = false
   }
 
