@@ -4,15 +4,7 @@ class FancyIrc {
   read_slots: ['server, 'port]
   read_write_slots: ['nick, 'password]
 
-  def initialize: server port: port {
-    initialize: server port: port nick: "NoNick" password: nil
-  }
-
-  def initialize: server port: port nick: nick{
-    initialize: server port: port nick: nick password: nil
-  }
-
-  def initialize: @server port: @port nick: @nick password: @password {
+  def initialize: @server port: @port nick: @nick = "NoNick", password: @password = nil {
     @connected = false
   }
 
