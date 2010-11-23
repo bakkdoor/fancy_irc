@@ -1,10 +1,8 @@
-require: "tcp_socket"
-
 class FancyIrc {
   read_slots: ['server, 'port]
   read_write_slots: ['nick, 'password]
 
-  def initialize: @server port: @port nick: @nick = "NoNick", password: @password = nil {
+  def initialize: @server port: @port nick: @nick ("NoNick") password: @password (nil) {
     @connected = false
   }
 
