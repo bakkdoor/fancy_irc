@@ -2,8 +2,7 @@ Fancy Package Specification new: "fancy_irc" with: {
   author: "Christopher Bertels"
   email: "chris@fancy-lang.org"
   include_files: ["lib/fancy_irc.fy"]
-  description: """This is a work-in-progress irc client/bot written in Fancy.
-It's far from production ready. You can do with this code whatever you like."""
+  description: """FancyIRC is a IRC client library written in Fancy, similar to Ruby's Cinch IRC bot framework, but smaller."""
   homepage: "http://www.fancy-lang.org"
   version: "0.0.1"
   add_ruby_dependency: "irc-socket"
