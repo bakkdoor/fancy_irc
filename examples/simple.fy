@@ -13,3 +13,4 @@ bot = FancyIRC Client new: {
 
 bot connect
 bot["#fancy"] send: "Hello, Fancy team. This is a fancy-written irc client =)"
+bot run
