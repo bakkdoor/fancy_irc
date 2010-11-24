@@ -17,9 +17,9 @@ bot = FancyIRC Client new: {
       try {
         url = open("http://tinyurl.com/api-create.php?url=" ++ (URI escape(url))) read()
         if: (url == "Error") then: {
-          nil
+          return nil
         } else: {
-         url
+         return url
         }
       } catch OpenURI::HTTPError {
         nil
@@ -33,10 +33,8 @@ bot = FancyIRC Client new: {
 
   on: 'channel pattern: /^!shorten (.+)$/ do: |msg, url| {
     urls = URI extract(url, "http")
-
     unless: (urls empty?) do: {
       short_urls = urls map: |url| { shorten: url } . compact
-
       unless: (short_urls empty?) do: {
         msg reply: $ short_urls join: ", "
       }
