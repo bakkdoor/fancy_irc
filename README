@@ -1,5 +1,5 @@
 This is a work-in-progress irc client/bot written in Fancy.
-It's far from production ready. You can do with this code whatever you like.
-It's inspired by Cinch, see here: https://github.com/injekt/cinch
+It's BSD licensed. So pretty much do with it whatever you like.
+-> Inspired by Cinch, see here: https://github.com/injekt/cinch
 
 http://www.fancy-lang.org
