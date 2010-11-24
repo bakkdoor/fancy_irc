@@ -1,3 +1,5 @@
+require: "fancy_irc.fy"
+
 bot = FancyIRC Client new: {
   configuration: {
     nickname: "fancy_irc"
@@ -7,10 +9,12 @@ bot = FancyIRC Client new: {
   }
 
   on: 'channel pattern: /^hello/ do: |msg| {
-    msg reply: $ "Hello to you too, " ++ (msg author) ++ "?"
+    msg reply: $ "Hello to you too, " ++ (msg author) ++ "!"
   }
 }
 
+"starting bot" println
+
 bot connect
-bot["#fancy"] send: "Hello, Fancy team. This is a fancy-written irc client =)"
+bot message: "Hello, Fancy team. This is a fancy-written irc client =)" channel: "#fancy"
 bot run
