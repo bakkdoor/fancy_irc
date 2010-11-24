@@ -66,5 +66,9 @@ class FancyIRC {
         }
       }
     }
+
+    def helpers: block {
+      self class class_eval(&block)
+    }
   }
 }
