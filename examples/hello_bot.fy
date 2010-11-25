@@ -2,7 +2,7 @@ require: "fancy_irc.fy"
 
 bot = FancyIRC Client new: {
   configuration: {
-    nickname: "fancy_irc"
+    nickname: "hello_bot"
     server: "irc.freenode.net"
     port: 6667
     channels: ["#fancy"]

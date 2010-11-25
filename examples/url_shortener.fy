@@ -5,7 +5,7 @@ require("uri")
 
 bot = FancyIRC Client new: {
   configuration: {
-    nickname: "fancy_irc"
+    nickname: "url_shortener"
     server: "irc.freenode.net"
     port: 6667
     channels: ["#fancy"]
