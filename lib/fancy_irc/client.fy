@@ -167,3 +167,9 @@ class FancyIRC {
     }
   }
 }
+
+# Don't display stacktrace when quitting execution.
+trap("INT") {
+  Console newline
+  System exit
+}
