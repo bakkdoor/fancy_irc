@@ -8,7 +8,7 @@ echo_bot = FancyIRC Client new: {
     channels: ["#fancy_test"]
   }
 
-  on: 'channel pattern: /.*/ do: |msg| {x
+  on: 'channel pattern: /.*/ do: |msg| {
     msg reply: $ msg author ++ " wrote: " ++ (msg text)
   }
 }
