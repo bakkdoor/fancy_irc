@@ -1,4 +1,4 @@
-require: "fancy_irc.fy"
+require: "fancy_irc"
 
 bot = FancyIRC Client new: {
   configuration: {
