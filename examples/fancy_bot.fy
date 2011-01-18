@@ -18,7 +18,7 @@ bot = FancyIRC Client new: {
   # define helper methods:
   helpers: {
     def log_message: msg {
-      self logfile println: $ ["[", msg author, "] ", msg author, ": ",  msg message] join
+      self logfile println: "[#{msg author}] #{msg author}: #{msg message}"
       self logfile flush
     }
 

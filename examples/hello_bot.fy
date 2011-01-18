@@ -9,7 +9,7 @@ bot = FancyIRC Client new: {
   }
 
   on: 'channel pattern: /^hello/ do: |msg| {
-    msg reply: $ "Hello to you too, " ++ (msg author) ++ "!"
+    msg reply: "Hello to you too, #{msg author}!"
   }
 }
 
