@@ -97,7 +97,7 @@ class FancyIRC {
       """
 
       { @handlers at: msg_type put: [] } unless: $ @handlers[msg_type]
-      @handlers[msg_type] << [msg_pattern, callback]
+      @handlers[msg_type] << (msg_pattern, callback)
     }
 
     def handle_message: msg type: type {
@@ -110,15 +110,11 @@ class FancyIRC {
       """
 
       @handlers[type] each: |handler| {
-        pattern = handler first
-        callback = handler second
+        pattern, callback = handler
         match msg text {
-          case pattern  -> |matcher|
-            args = Array new: $ matcher size()
+          case pattern -> |matcher|
+            args = matcher to_a
             args at: 0 put: msg
-            args size - 1 times: |i| {
-              args at: (i + 1) put: (matcher[i + 1])
-            }
             callback call: args
         }
       }
@@ -145,11 +141,8 @@ class FancyIRC {
 
       match line {
         # channel msg
-        case /^:(\S+)\!\S+ PRIVMSG (#\S+) :(.*)$/ -> |matcher|
-          author = matcher[1]
-          channel = (matcher[2])
-          text = matcher[3]
-          timestamp = Time now()
+        case /^:(\S+)\!\S+ PRIVMSG (#\S+) :(.*)$/ -> |_, author, channel, text|
+          timestamp = Time now
           msg = Message new: text author: author channel: channel timestamp: timestamp client: self
           handle_message: msg type: 'channel
       }
