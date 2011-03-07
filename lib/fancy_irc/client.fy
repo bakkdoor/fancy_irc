@@ -112,7 +112,7 @@ class FancyIRC {
       @handlers[type] each: |handler| {
         pattern = handler first
         callback = handler second
-        match msg text -> {
+        match msg text {
           case pattern  -> |matcher|
             args = Array new: $ matcher size()
             args at: 0 put: msg
@@ -135,23 +135,34 @@ class FancyIRC {
       @irc privmsg(channel, message)
     }
 
+    def parse_line: line {
+      """
+      @line Line to be parsed
+
+      Parses a line of incoming data from irc, creates a Message
+      object and handles the message with handle_message.
+      """
+
+      match line {
+        # channel msg
+        case /^:(\S+)\!\S+ PRIVMSG (#\S+) :(.*)$/ -> |matcher|
+          author = matcher[1]
+          channel = (matcher[2])
+          text = matcher[3]
+          timestamp = Time now()
+          msg = Message new: text author: author channel: channel timestamp: timestamp client: self
+          handle_message: msg type: 'channel
+      }
+    }
+
     def run {
       """
       Starts the IRC client and let it handle incoming messages, as defined.
       """
 
-      { @irc read() } while_do: |line| {
+      while: { @irc read() } do: |line| {
         line println
-        match line -> {
-          # channel msg
-          case /^:(\S+)\!\S+ PRIVMSG (#\S+) :(.*)$/ -> |matcher|
-            author = matcher[1]
-            channel = (matcher[2])
-            text = matcher[3]
-            timestamp = Time now()
-            msg = Message new: text author: author channel: channel timestamp: timestamp client: self
-            handle_message: msg type: 'channel
-        }
+        self @@ parse_line: line
       }
     }
 
