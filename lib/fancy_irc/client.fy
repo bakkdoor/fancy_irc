@@ -96,7 +96,7 @@ class FancyIRC {
          }
       """
 
-      { @handlers at: msg_type put: [] } unless: $ @handlers[msg_type]
+      { @handlers[msg_type]: [] } unless: $ @handlers[msg_type]
       @handlers[msg_type] << (msg_pattern, callback)
     }
 
@@ -113,9 +113,13 @@ class FancyIRC {
         pattern, callback = handler
         match msg text {
           case pattern -> |matcher|
-            args = matcher to_a
-            args at: 0 put: msg
-            callback call: args
+            try {
+              args = matcher to_a
+              args[0]: msg
+              callback call: args
+            } catch Exception => e {
+              STDERR println: "ERROR: #{e}"
+            }
         }
       }
     }

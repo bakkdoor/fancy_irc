@@ -8,7 +8,7 @@ require("net/http")
 
 FANCY_DIR = ARGV[0]
 FANCY_CMD = "#{FANCY_DIR}/bin/fancy -I #{FANCY_DIR}"
-LOGDIR = ARGV[1] if_do: { ARGV[1] } else: { "." }
+LOGDIR = ARGV[1] || "."
 API_DOC_DESTDIR = ARGV[2]
 
 class Seen {
@@ -22,10 +22,10 @@ class Seen {
 
 bot = FancyIRC Client new: {
   configuration: {
-    nickname: "fancy_bot"
+    nickname: "fancy_bot2"
     server: "irc.freenode.net"
     port: 6667
-    channels: ["#fancy"]
+    channels: ["#fancy_test"]
   }
 
   @seen_users = <[]>
@@ -36,24 +36,24 @@ bot = FancyIRC Client new: {
     def log_message: msg {
       time = Time now
       logfile println: "[#{time}] #{msg author}: #{msg text}"
-      logfile flush()
+      logfile flush
     }
 
     def logfile {
-      @current_date = @current_date or_take: $ Date today
-      @logfile = @logfile or_take: $ File open: "#{LOGDIR}/#fancy_#{Date.today}.txt" modes: ['append]
+      @current_date = @current_date || { Date today }
+      @logfile = @logfile || { File open: "#{LOGDIR}/#fancy_#{Date.today}.txt" modes: ['append] }
       today = Date today
       if: (@current_date != today) then: {
         @logfile close
-        @current_date = Date today
-        @logfile = File open: "#{LOGDIR}/#fancy_#{Date.today}.txt" modes: ['append]
+        @current_date = today
+        @logfile = File open: "#{LOGDIR}/#fancy_#{today}.txt" modes: ['append]
       }
       @logfile
     }
 
     def shutdown {
       "Shutting down bot!" println
-      { @logfile close() } if: @logfile
+      { @logfile close } if: @logfile
     }
 
     def shorten: url {
@@ -74,7 +74,7 @@ bot = FancyIRC Client new: {
   on: 'channel pattern: /.*/ do: |msg| {
     # log all channel messages
     log_message: msg
-    @seen_users at: (msg author) put: $ Seen new: msg
+    @seen_users[msg author]: $ Seen new: msg
   }
 
   on: 'channel pattern: /^!seen (.+)/ do: |msg, nick| {
@@ -96,6 +96,11 @@ bot = FancyIRC Client new: {
     msg reply: text
   }
 
+  on: 'channel pattern: /^!(info|help)$/ do: |msg, _| {
+    msg reply: "This is FancyBot v0.3 running @ irc.fancy-lang.org"
+    msg reply: "Possible commands are: !seen <nick>, !uptime, !shorten <url> [<urls>], !info, !help"
+  }
+
   on: 'channel pattern: /^!(info|help) (.+)$/ do: |msg, _, command_name| {
     match command_name {
       case "!seen" ->
@@ -112,11 +117,6 @@ bot = FancyIRC Client new: {
       case _ ->
         msg reply: "Unknown command: #{command_name}."
     }
-  }
-
-  on: 'channel pattern: /^!(info|help)$/ do: |msg| {
-    msg reply: "This is FancyBot v0.3 running @ irc.fancy-lang.org"
-    msg reply: "Possible commands are: !seen <nick>, !uptime, !shorten <url> [<urls>], !info, !help"
   }
 
   on: 'channel pattern: /^!shorten (.+)$/ do: |msg, url| {
