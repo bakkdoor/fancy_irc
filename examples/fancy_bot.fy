@@ -1,3 +1,5 @@
+#!/usr/bin/env fancy
+
 require: "fancy_irc"
 
 require("open-uri")
@@ -6,10 +8,10 @@ require("open3")
 require("timeout")
 require("net/http")
 
-FANCY_DIR = ARGV[0]
+FANCY_DIR = ARGV[1]
 FANCY_CMD = "#{FANCY_DIR}/bin/fancy -I #{FANCY_DIR}"
-LOGDIR = ARGV[1] || "."
-API_DOC_DESTDIR = ARGV[2]
+LOGDIR = ARGV[2] || "."
+API_DOC_DESTDIR = ARGV[3]
 
 class Seen {
   def initialize: @message {
@@ -34,7 +36,7 @@ bot = FancyIRC Client new: {
   # define helper methods:
   helpers: {
     def log_message: msg {
-      time = Time now
+      time = Time now strftime("%Y-%m-%d %H:%m:%S %z")
       logfile println: "[#{time}] #{msg author}: #{msg text}"
       logfile flush
     }
