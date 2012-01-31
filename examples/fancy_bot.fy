@@ -36,7 +36,7 @@ bot = FancyIRC Client new: {
   # define helper methods:
   helpers: {
     def log_message: msg {
-      time = Time now strftime("%Y-%m-%d %H:%m:%S %z")
+      time = Time now strftime("%Y-%m-%d %H:%M:%S %z")
       logfile println: "[#{time}] #{msg author}: #{msg text}"
       logfile flush
     }
