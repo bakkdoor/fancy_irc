@@ -150,6 +150,9 @@ class FancyIRC {
           timestamp = Time now
           msg = Message new: text author: author channel: channel timestamp: timestamp client: self
           handle_message: msg type: 'channel
+
+        case /^PING (.+)$/ -> |_ server|
+          @irc pong(server)
       }
     }
 
