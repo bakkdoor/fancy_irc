@@ -100,6 +100,10 @@ class FancyIRC {
       @handlers[msg_type] << (msg_pattern, callback)
     }
 
+    def on: msg_type do: callback {
+      on: msg_type pattern: Object do: callback
+    }
+
     def handle_message: msg type: type {
       """
       @msg Message to be handled (processed by any matching handler).
@@ -150,10 +154,15 @@ class FancyIRC {
 
       match line {
         # channel msg
-        case /^:(\S+)\!\S+ PRIVMSG (\S+) :(.*)$/ -> |_, author, channel, text|
+        case /^:(\S+)\!\S+ PRIVMSG (\S+) :(.*)$/ -> |_ author channel text|
           timestamp = Time now
           msg = Message new: text author: author channel: channel timestamp: timestamp client: self
           handle_message: msg type: 'channel
+
+        case /^:(\S+)\!\S+ (JOIN|PART|QUIT) :?(\S+).*/ -> |_ user type channel|
+          timestamp = Time now
+          msg = Message new: nil author: user channel: channel timestamp: timestamp client: self
+          handle_message: msg type: (type lowercase to_sym)
 
         case /^PING (.+)$/ -> |_ server|
           @irc pong(server)
