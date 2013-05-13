@@ -30,7 +30,12 @@ class FancyIRC {
       was received from.
       """
 
-      @client message: message channel: @channel
+      match @channel {
+        case /^#/ ->
+          @client message: message channel: @channel
+        case _ ->
+          @client message: message to_user: @author
+      }
     }
   }
 }

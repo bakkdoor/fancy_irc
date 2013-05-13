@@ -136,6 +136,10 @@ class FancyIRC {
       @irc privmsg(channel, message)
     }
 
+    def message: message to_user: user {
+      @irc privmsg(user, message)
+    }
+
     def parse_line: line {
       """
       @line Line to be parsed
@@ -146,7 +150,7 @@ class FancyIRC {
 
       match line {
         # channel msg
-        case /^:(\S+)\!\S+ PRIVMSG (#\S+) :(.*)$/ -> |_, author, channel, text|
+        case /^:(\S+)\!\S+ PRIVMSG (\S+) :(.*)$/ -> |_, author, channel, text|
           timestamp = Time now
           msg = Message new: text author: author channel: channel timestamp: timestamp client: self
           handle_message: msg type: 'channel
