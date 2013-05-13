@@ -119,6 +119,7 @@ class FancyIRC {
               callback call: args
             } catch Exception => e {
               STDERR println: "ERROR: #{e}"
+              STDERR println: $ e backtrace
             }
         }
       }
