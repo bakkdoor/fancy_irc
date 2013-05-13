@@ -64,9 +64,9 @@ class FancyIRC {
         "Could not connect to server!" raise!
       }
 
+      { @irc pass(@config password) } if: $ @config password
       @irc nick(@config nickname)
       @irc user(@config nickname, 0, "*", "fancy_irc_bot")
-      { @irc pass(@config password) } if: $ @config password
 
       # join channels
       @config channels each: |c| {
