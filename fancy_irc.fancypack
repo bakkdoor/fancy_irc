@@ -4,6 +4,6 @@ Fancy Package Specification new: "fancy_irc" with: {
   include_files: ["lib/fancy_irc.fy"]
   description: """FancyIRC is a IRC client library written in Fancy, similar to Ruby's Cinch IRC bot framework, but smaller."""
   homepage: "http://www.fancy-lang.org"
-  version: "0.0.1"
+  version: "0.1.0"
   ruby_dependencies: [["irc-socket"]]
 }
