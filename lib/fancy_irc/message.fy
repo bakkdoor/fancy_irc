@@ -7,7 +7,7 @@ class FancyIRC {
     @author, @text, @channel, @timestamp & @client (the FancyIRC Client instance that got this message).
     """
 
-    read_slots: ['text, 'author, 'channel, 'timestamp]
+    read_write_slots: ['text, 'author, 'channel, 'timestamp, 'client]
 
     def initialize: @text author: @author channel: @channel timestamp: @timestamp client: @client {
       """
