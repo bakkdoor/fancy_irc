@@ -74,6 +74,17 @@ class FancyIRC {
       }
     }
 
+    def disconnect {
+      """
+      Disconnects the client from the server, if connected.
+      """
+
+      if: @irc then: {
+        @irc close()
+        @irc = nil
+      }
+    }
+
     def on: msg_type pattern: msg_pattern do: callback {
       """
       @msg_type Type of message to handle (possible one of: 'channel,
