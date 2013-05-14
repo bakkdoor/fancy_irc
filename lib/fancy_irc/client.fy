@@ -85,6 +85,15 @@ class FancyIRC {
       }
     }
 
+    def reconnect {
+      """
+      Reconnects the client with the server.
+      """
+
+      disconnect
+      connect
+    }
+
     def on: msg_type pattern: msg_pattern do: callback {
       """
       @msg_type Type of message to handle (possible one of: 'channel,
