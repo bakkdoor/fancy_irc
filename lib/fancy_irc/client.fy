@@ -1,3 +1,8 @@
+class IRCSocket {
+  forwards_unary_ruby_methods
+  alias_method: 'read for_ruby: 'read
+}
+
 class FancyIRC {
   class Client {
     """
@@ -59,8 +64,8 @@ class FancyIRC {
       """
 
       @irc = IRCSocket new(@config server, @config port, @config ssl)
-      @irc connect()
-      unless: (@irc connected?()) do: {
+      @irc connect
+      unless: (@irc connected?) do: {
         "Could not connect to server!" raise!
       }
 
@@ -80,7 +85,7 @@ class FancyIRC {
       """
 
       if: @irc then: {
-        @irc close()
+        @irc close
         @irc = nil
       }
     }
@@ -194,7 +199,7 @@ class FancyIRC {
       Starts the IRC client and let it handle incoming messages, as defined.
       """
 
-      while: { @irc read() } do: |line| {
+      while: { @irc read } do: |line| {
         line println
         self @@ parse_line: line
       }
@@ -208,7 +213,7 @@ class FancyIRC {
       @Block@ that contains those method defnitions.
       """
 
-      self class class_eval(&block)
+      self class class_eval: block
     }
   }
 }
