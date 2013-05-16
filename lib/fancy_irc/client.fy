@@ -200,7 +200,7 @@ class FancyIRC {
       """
 
       while: { @irc read } do: |line| {
-        line println
+        "#{Time now} - #{line}" println
         self @@ parse_line: line
       }
     }
