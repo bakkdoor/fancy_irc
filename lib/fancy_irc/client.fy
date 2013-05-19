@@ -175,6 +175,12 @@ class FancyIRC {
       @irc privmsg(user, message)
     }
 
+    def broadcast: message {
+      @config channels each: |c| {
+        message: message channel: c
+      }
+    }
+
     def parse_line: line {
       """
       @line Line to be parsed

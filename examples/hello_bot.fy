@@ -8,13 +8,25 @@ bot = FancyIRC Client new: {
     channels: ["#fancy"]
   }
 
-  on: 'channel pattern: /^hello/ do: |msg| {
+  on: 'message pattern: /^hello/ do: |msg| {
     msg reply: "Hello to you too, #{msg author}!"
+  }
+
+  on: 'message do: |msg| {
+    "Got message (channel or private): #{msg text}" println
+  }
+
+  on: 'channel do: |msg| {
+    "Got channel message: #{msg text}" println
+  }
+
+  on: 'private do: |msg| {
+    "Got private message: #{msg text}" println
   }
 }
 
 "starting bot" println
 
 bot connect
-bot message: "Hello, Fancy team. This is a fancy-written irc client =)" channel: "#fancy"
+# bot message: "Hello, Fancy team. This is a fancy-written irc client =)" channel: "#fancy"
 bot run
