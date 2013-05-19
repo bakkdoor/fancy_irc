@@ -28,5 +28,5 @@ bot = FancyIRC Client new: {
 "starting bot" println
 
 bot connect
-# bot message: "Hello, Fancy team. This is a fancy-written irc client =)" channel: "#fancy"
+bot broadcast: "Hello, everyone."
 bot run
