@@ -121,6 +121,13 @@ class FancyIRC {
          }
       """
 
+      if: (msg_type == 'message) then: {
+        on: 'channel pattern: msg_pattern do: callback
+        on: 'private pattern: msg_pattern do: callback
+        return nil
+      }
+
+
       { @handlers[msg_type]: [] } unless: $ @handlers[msg_type]
       @handlers[msg_type] << (msg_pattern, callback)
     }
@@ -129,16 +136,15 @@ class FancyIRC {
       on: msg_type pattern: Object do: callback
     }
 
-    def handle_message: msg type: type {
+    def handle_message: msg {
       """
       @msg Message to be handled (processed by any matching handler).
-      @type Type of message, e.g. 'channel or 'private.
       @return Return value of the handler's callback that matched, if any.
 
       Handles a given message of a given type.
       """
 
-      @handlers[type] each: |handler| {
+      @handlers[msg type] each: |handler| {
         pattern, callback = handler
         match msg text {
           case pattern -> |matcher|
@@ -180,14 +186,27 @@ class FancyIRC {
       match line {
         case /^:(\S+)\!\S+ (JOIN|PART|QUIT) :?(\S+).*/ -> |_ user type channel|
           timestamp = Time now
-          msg = Message new: nil author: user channel: channel timestamp: timestamp client: self
-          handle_message: msg type: (type lowercase to_sym)
+          handle_message: $ Message new: @{
+            type: $ type lowercase to_sym
+            text: type
+            author: user
+            channel: channel
+            timestamp: timestamp
+            client: self
+          }
 
         # channel msg
         case /^:(\S+)\!\S+ PRIVMSG (\S+) :(.*)$/ -> |_ author chan text|
           timestamp = Time now
-          msg = Message new: text author: author channel: chan timestamp: timestamp client: self
-          handle_message: msg type: 'channel
+          type = if: (chan[0] == "#") then: { 'channel } else: { 'private }
+          handle_message: $ Message new: @{
+            type: type
+            text: text
+            author: author
+            channel: chan
+            timestamp: timestamp
+            client: self
+          }
 
         case /^PING (.+)$/ -> |_ server|
           @irc pong(server)

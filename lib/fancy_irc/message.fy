@@ -7,10 +7,15 @@ class FancyIRC {
     @author, @text, @channel, @timestamp & @client (the FancyIRC Client instance that got this message).
     """
 
-    read_write_slots: ['text, 'author, 'channel, 'timestamp, 'client]
+    read_write_slots: ['type, 'text, 'author, 'channel, 'timestamp, 'client]
 
-    def initialize: @text author: @author channel: @channel timestamp: @timestamp client: @client {
+    def initialize: block {
+      block call: [self]
+    }
+
+    def initialize: @type text: @text author: @author channel: @channel timestamp: @timestamp client: @client {
       """
+      @type Type of message: 'join, 'part, 'quit, 'message, 'private or 'channel
       @text Text of the message been sent.
       @author Nickname of the user that sent the message.
       @channel Name of the channel on which the message was sent.
@@ -30,8 +35,8 @@ class FancyIRC {
       was received from.
       """
 
-      match @channel {
-        case /^#/ ->
+      match @type {
+        case 'channel ->
           @client message: message channel: @channel
         case _ ->
           @client message: message to_user: @author
